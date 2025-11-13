@@ -1,0 +1,49 @@
+---
+title: "DATA 550 - Final Project"
+subtitle: "Beijing Temperature & Humidity Data"
+author: "Ivanna de Anda"
+date: "`r Sys.Date()`"
+output: html_document
+params:
+  production: TRUE
+  
+---
+
+# Introduction
+These data were acquired from GitHub user btbuIntelliSense. The dataset provides hourly temperature and humidity data for all of 2019 in Beijing. There is limited information on how these data were collected. The reason this dataset was chosen was so it can help me think through how to analyze my own thesis data involving temperature and humidity data for participants across Atlanta (which cannot be made publicly available for the purposes of this project). 
+
+Though my own thesis will go beyond descriptive statistics of the data collected, through producing some basic descriptives of this temperature dataset, I can begin to think through effective ways to present these data. This brief Rmarkdown file presents the average distribution of evening (defined as 6pm-6am) temperature and humidity across the months of May-September. 
+
+```{r, load-data, include = FALSE}
+here::i_am("final_data.Rmd")
+
+summer_evening_night_data <- read.csv(
+  file = here::here("output/summer_evening_night_data.rds")
+)
+
+nighttime_hourly <- read.csv(
+  file = here::here("output/nighttime_hourly.rds")
+)
+```
+
+# Descriptive Analysis
+
+## Monthly Summary Table
+```{r, monthly-summary-table, echo = FALSE}
+monthly_summary <- readRDS(
+  file = here::here("output/monthly_summary_table.rds")
+)
+
+monthly_summary
+```
+
+The table above summarizes average monthly temperatures during evening hours from 6pm-6am. The summaries provide insight into the monthly variations in temperature and humidity over the Summer months, showing a clear peak for both metrics in the month of July. 
+
+## Nighttime Hourly Temperature Data over Summer 2019
+```{r, temp_figure, echo = FALSE}
+knitr::include_graphics(
+  here::here("output/temp_figure.png")
+)
+```
+
+The figure above overlays the average hourly temperature for each Summer month (May-September). This aligns with the table, with July having the highest hourly average temperatures. 
