@@ -13,6 +13,10 @@ make_tables: code/01_summary_table.R output/summer_evening_night_data.rds
 .PHONY: make_figure
 make_figure: code/02_temp_figure.R output/nighttime_hourly.rds
 	Rscript code/02_temp_figure.R
+	
+.PHONY: install
+install:
+	Rscript -e "renv::restore(prompt = FALSE)"
 
 .PHONY: clean
 clean:
