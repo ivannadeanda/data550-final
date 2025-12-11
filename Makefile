@@ -1,3 +1,4 @@
+### REPORT-ASSOCIATED RULES ### (Run within docker container)
 toolkit_final_report.html: code/render_report.R final_data.Rmd \
   clean_data make_tables make_figure
 	Rscript code/render_report.R
@@ -20,4 +21,25 @@ install:
 
 .PHONY: clean
 clean:
-	rm output/*.rds && rm -f output/*.png && rm -f *html
+	rm output/*.rds && rm -f output/*.png && rm -f *html && rm report/*.html
+	
+### DOCKER-ASSOCIATED RULES ### (Run on our local machine)
+
+PROJECTFILES = final_data.Rmd code/00_clean_data.R code/01_summary_table.R \
+	code/02_temp_figure.R code/render_report.R Makefile
+	
+RENVFILES = renv.lock renv/activate.R renv/settings.json	
+
+# Rule to build image
+project_image: Dockerfile $(PROJECTFILES) $(RENVFILES)
+	docker build -t toolkit_final .
+	touch $@
+	
+# Rule to run container in either windows or mac
+.PHONY: docker_report_windows
+docker_report_windows:
+	docker run -v "/$$(pwd)/report":/home/rstudio/project/report ivannadeanda/toolkit_final
+
+.PHONY: docker_report_mac
+docker_report_mac:
+	docker run -v "$$(pwd)/report":/home/rstudio/project/report ivannadeanda/toolkit_final
